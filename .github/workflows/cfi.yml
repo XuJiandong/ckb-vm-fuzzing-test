@@ -1,0 +1,24 @@
+name: develop
+
+on:
+  pull_request:
+  push:
+  schedule:
+    - cron: '0 0 * * 1'
+
+
+jobs:
+
+  fuzz:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Dep
+        run: |
+          sudo apt install -y device-tree-compiler
+          rustup toolchain install nightly
+          cargo install cargo-fuzz
+      - name: Run
+        run: |
+          bash run_cfi.sh
+        
